@@ -1,27 +1,56 @@
 do ->
   ## -- Private ----------------------------------------------------------------
 
-  _options =
-    enableHighAccuracy : true
-    timeout            : 0
-    maximumAge         : Infinity
+  _geolocation = navigator.geolocation
 
-  _deleteNullValues = (objt) ->
+  _deleteNullFromObject = (objt) ->
     delete objt[key] for key, value of objt when not value?
     objt
 
-  _geolocationPromise = ->
+  _mergePositionObject = (position) ->
+    objt = position.coords
+    objt.timestamp = position.timestamp
+    objt
+
+  _createPositionObject = (objt) ->
+    objt = _mergePositionObject objt
+    objt = _deleteNullFromObject objt
+    objt
+
+  _watchPosition = (success, err, options) ->
+    unless options?
+      options =
+        enableHighAccuracy : false # not necessary precision
+        timeout            : 600   # 10s timeout
+        maximumAge         : 0     # not cache
+
+    _geolocation.watchPosition ((position) ->
+      success _createPositionObject position
+      ), err, options
+
+  _positionPromise = (options) ->
+    unless options?
+      options =
+        enableHighAccuracy : true # precision first
+        maximumAge         : 0    # not cache
+        timeout            : 600  # 10s timeout
+
     new Promise((resolve, reject) ->
-      navigator.geolocation.getCurrentPosition ((position) ->
-        objt = position.coords
-        objt.timestamp = position.timestamp
-        objt = _deleteNullValues objt
-        resolve(objt)
+      _geolocation.getCurrentPosition ((position) ->
+        resolve _createPositionObject position
       ), ((err) ->
         reject Error err.message
-      ), _options
+      ), options
     )
 
   ## -- Public -----------------------------------------------------------------
 
-  parrot.geolocation = (cb, err)-> _geolocationPromise().then (cb), cb
+  parrot.geolocation =
+    position : (options, cb) ->
+      if typeof arguments[0] is 'function'
+        cb = options
+        options = null
+
+      _positionPromise(options).then (cb), cb
+    watch    : (success, err, options) -> _watchPosition success, err, options
+    clear    : (uid) -> _geolocation.clearWatch uid
