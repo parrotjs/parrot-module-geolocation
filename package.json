@@ -1,0 +1,37 @@
+{
+  "name": "parrot-module-geolocation",
+  "description": "Using geolocation with guarantees to obtain a good approximation.",
+  "version": "0.12.18",
+  "author": {
+    "name": "Kiko Beats",
+    "email": "josefrancisco.verdu@gmail.com",
+    "url": "https://github.com/Kikobeats"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "gulp": "*",
+    "gulp-coffee": "*",
+    "gulp-concat": "*",
+    "gulp-connect": "*",
+    "gulp-header": "*",
+    "gulp-open": "*",
+    "gulp-uglify": "*",
+    "gulp-util": "*",
+    "gulp-watch": "*",
+    "mocha": "*",
+    "should": "*"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "homepage": "https://github.com/parrotjs/parrot-boilerplate",
+  "keywords": [
+    "parrot",
+    "module",
+    "geolocation",
+    "position"
+  ],
+  "license": "MIT",
+  "main": "./index.js",
+  "repository": "parrotjs/parrot-boilerplate"
+}
