@@ -46,11 +46,10 @@ do ->
   ## -- Public -----------------------------------------------------------------
 
   parrot.geolocation =
+    clear    : (uid) -> _geolocation.clearWatch uid
+    watch    : (success, err, options) -> _watchPosition success, err, options
     position : (options, cb) ->
       if typeof arguments[0] is 'function'
         cb = options
         options = null
-
       _positionPromise(options).then (cb), cb
-    watch    : (success, err, options) -> _watchPosition success, err, options
-    clear    : (uid) -> _geolocation.clearWatch uid
