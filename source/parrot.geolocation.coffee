@@ -17,7 +17,7 @@ do ->
     objt = _deleteNullFromObject objt
     objt
 
-  _watchPosition = (success, err, options) ->
+  _watchPosition = (options, success, err) ->
     unless options?
       options =
         enableHighAccuracy : false # not necessary precision
@@ -51,5 +51,8 @@ do ->
       if typeof arguments[0] is 'function'
         cb = options
         options = null
-      _positionPromise(options).then (cb), cb
-    watch    : (success, err, options) -> _watchPosition success, err, options
+      _positionPromise(options).then ((position) ->
+        cb(position, null)
+      ), (err) -> cb(null, err)
+
+    watch    : (options, success, err) -> _watchPosition options, success, err
