@@ -20,17 +20,22 @@ bower install parrot-module-geolocation --save
 
 For use browser `geolocation` feature we will use `parrot.geolocation` namespace.
 
+
+
 ## Documentation
 
 ### parrot.geolocation
 
 #### .position([Object], &lt;Function&gt;)
 
-Use this method to get your current position.
+Use this method to get your current position and it receives:
 
-The method return a callback with `Position` Object or `Error`.
+* Optional [`PositionOptions`](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions).
+* A `callback` with the result (`Position` or `Error`).
 
-Also yo can provide a specific options. default options are:
+The `Position` that would be returns is a merge object between [`Position`](https://developer.mozilla.org/en-US/docs/Web/API/Position) and [`Coordinates`](https://developer.mozilla.org/en-US/docs/Web/API/Coordinates) where the `null` values have been removed.
+
+Default options are:
 
 ```coffee
 enableHighAccuracy : true # precision first
@@ -38,7 +43,7 @@ maximumAge         : 0    # not cache
 timeout            : 600  # 10s timeout
 ```
 
-And example of use:
+Example of use:
 
 ```coffee
 parrot.geolocation.position (position, err) ->
@@ -51,7 +56,13 @@ parrot.geolocation.position (position, err) ->
 
 It registers a method handler that will be called when the position changed.
 
-And again you can provide your options, but the default options are:
+The arguments are:
+
+* Optional [`PositionOptions`](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions).
+* `success` handler. It receives `Position` Object.
+* `error` jhandler. It receives `PositionError` Object.
+
+Default options are:
 
 ```coffee
 enableHighAccuracy : false # not necessary precision
@@ -59,7 +70,7 @@ timeout            : 600   # 10s timeout
 maximumAge         : 0     # not cache
 ```
 
-This method return a `uid` that you need to store for clear the handler later.
+This method returns a `uid` that you need to store for clear the handler later.
 
 #### .clear(&lt;Integer&gt;)
 
