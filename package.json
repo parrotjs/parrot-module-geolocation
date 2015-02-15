@@ -1,7 +1,7 @@
 {
   "name": "parrot-module-geolocation",
   "description": "Using geolocation with guarantees to obtain a good approximation.",
-  "version": "0.12.19",
+  "version": "1.0.0",
   "author": {
     "name": "Kiko Beats",
     "email": "josefrancisco.verdu@gmail.com",
